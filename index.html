@@ -386,7 +386,7 @@ summary {
 <div id="TOC">
 <ul>
 <li><a href="#about-the-project">About the project</a></li>
-<li><a href="#insert-chapter-2-title-here">Insert chapter 2 title here</a></li>
+<li><a href="#regression-and-model-validation">Regression and model validation</a></li>
 </ul>
 </div>
 
@@ -397,14 +397,36 @@ summary {
 <p><em>This is a test</em></p>
 <hr />
 </div>
-<div id="insert-chapter-2-title-here" class="section level1">
-<h1>Insert chapter 2 title here</h1>
+<div id="regression-and-model-validation" class="section level1">
+<h1>Regression and model validation</h1>
 <p><em>Describe the work you have done this week and summarize your learning.</em></p>
 <ul>
 <li>Describe your work and results clearly.</li>
 <li>Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods.</li>
 <li>Assume the reader has no previous knowledge of your data or the more advanced methods you are using.</li>
 </ul>
+<p><em>Load libraries</em></p>
+<p>library(ggplot2)</p>
+<p>library(GGally)</p>
+<p><em>Reading the “learning 2014” data into a dataframe</em></p>
+<p>dta &lt;- read.csv(“./data/learning2014.csv”, sep = “,”, header = TRUE)</p>
+<p><em>check the dataframe dimensions and structure</em></p>
+<p>dim(dta)</p>
+<p>str(dta)</p>
+<p><em>plotting the data into a graph</em></p>
+<p>p &lt;- ggpairs(dta, mapping = aes(col = gender, alpha = 0.3), lower = list(combo = wrap(“facethist”, bins = 20)))</p>
+<p>p</p>
+<p><em>There’s no difference between the age distribution. Mwn have a slightly higher attitude. Women are slightly better at surface learning.</em></p>
+<p><em>lets take attitude, age, and gender to a regression model</em></p>
+<p>my_model &lt;- lm(Points ~ Attitude + Age + gender, data = dta)</p>
+<p>summary(my_model)</p>
+<p><em>From these three variables, only Attitude has statistically signifigance as an explanatory variable. Lets remove the two non-significant variables</em></p>
+<p>my_model &lt;- lm(Points ~ Attitude, data = dta)</p>
+<p>summary(my_model)</p>
+<p><em>There is a small effect with the increase of attitude for increasing the exam points, 0.3 exam points for 1 point increment in attitude towards statistics.</em></p>
+<p>par(mfrow=c(2,2))</p>
+<p>plot(my_model, which=c(1,2,5))</p>
+<p><em>residuals are close to normally distributed.</em></p>
 <hr />
 </div>
 
