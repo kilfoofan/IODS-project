@@ -1,9 +1,11 @@
 setwd("C:/koulu/mooc/intro to open data/IODS-project/")
+# access the dplyr library
+library(dplyr)
+
+#access the data
 daatta <- read.table("http://www.helsinki.fi/~kvehkala/JYTmooc/JYTOPKYS3-data.txt", sep="\t", header=TRUE)
 dim(daatta)
 str(daatta)
-
-library(dplyr)
 
 # questions related to deep, surface and strategic learning
 deep_questions <- c("D03", "D11", "D19", "D27", "D07", "D14", "D22", "D30","D06",  "D15", "D23", "D31")
@@ -22,9 +24,6 @@ daatta$surf <- rowMeans(surface_columns)
 strategic_columns <- select(daatta, one_of(strategic_questions))
 daatta$stra <- rowMeans(strategic_columns)
 
-# access the dplyr library
-library(dplyr)
-
 # choose a handful of columns to keep
 keep_columns <- c("gender","Age","Attitude", "deep", "stra", "surf", "Points")
 
@@ -33,4 +32,6 @@ anadata <- select(daatta, one_of(keep_columns))
 anadata <- anadata %>%  filter(Points !=0)
 
 #write the data to a csv-file
-write.csv(file = "./data/learning2014.csv", x = anadata)
+str(anadata)
+head(anadata)
+write.csv(file = "./data/learning2014.csv", x = anadata) #comma separated!

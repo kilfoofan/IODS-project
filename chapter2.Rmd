@@ -1,7 +1,53 @@
-# Insert chapter 2 title here
+# Regression and model validation
 
 *Describe the work you have done this week and summarize your learning.*
 
 - Describe your work and results clearly. 
 - Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods.
 - Assume the reader has no previous knowledge of your data or the more advanced methods you are using.
+
+
+
+*Load libraries*
+
+library(ggplot2)
+
+library(GGally)
+
+*Reading the "learning 2014" data into a dataframe*
+
+dta <- read.csv("./data/learning2014.csv", sep = ",", header = TRUE)
+
+*check the dataframe dimensions and structure*
+
+dim(dta)
+
+str(dta)
+
+*plotting the data into a graph*
+
+p <- ggpairs(dta, mapping = aes(col = gender, alpha = 0.3), lower = list(combo = wrap("facethist", bins = 20)))
+
+p
+
+*There's no difference between the age distribution. Mwn have a slightly higher attitude. Women are slightly better at surface learning.*
+
+*lets take attitude, age, and gender to a regression model*
+
+my_model <- lm(Points ~ Attitude + Age + gender, data = dta)
+
+summary(my_model)
+
+*From these three variables, only Attitude has statistically signifigance as an explanatory variable. Lets remove the two non-significant variables*
+
+my_model <- lm(Points ~ Attitude, data = dta)
+
+summary(my_model)
+
+*There is a small effect with the increase of attitude for increasing the exam points, 0.3 exam points for 1 point increment in attitude towards statistics.*
+
+par(mfrow=c(2,2))
+
+plot(my_model, which=c(1,2,5))
+
+*residuals are close to normally distributed.*
