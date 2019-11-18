@@ -1,6 +1,7 @@
 setwd("C:/koulu/mooc/intro to open data/IODS-project/")
 # access the dplyr library
 library(dplyr)
+library(knitr)
 
 #access the data
 daatta <- read.table("http://www.helsinki.fi/~kvehkala/JYTmooc/JYTOPKYS3-data.txt", sep="\t", header=TRUE)

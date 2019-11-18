@@ -46,8 +46,8 @@ summary(my_model)
 
 *There is a small effect with the increase of attitude for increasing the exam points, 0.3 exam points for 1 point increment in attitude towards statistics.*
 
-par(mfrow=c(2,2))
+#par(mfrow=c(2,2))
 
-plot(my_model, which=c(1,2,5))
+plot(my_model, which=1)
 
 *residuals are close to normally distributed.*
