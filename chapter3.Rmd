@@ -13,7 +13,14 @@ Arto Vesterbacka
 
 This chapter is about logistic regression using student data.
 
+## Data Wrangling
+
+Here we take the student data from two files, combine them into one with only the observations that are found from
+both sets. We also create new variables from existing ones to be used in later analysis.
+
 ### Setting up libraries and working directory.
+
+Here we load all the required libraries for the data wrangling and analysis.
 
 ```{r Libraries}
 library(knitr)
@@ -23,11 +30,18 @@ library(tidyr)
 #library(GGally)
 ```
 
+### Setting the working directory
+
+Here we set the working directory. If you are going to run this on your computer, you will need to set tis
+to the correct path corresponding to your system.
+
 ```{r Working directory}
 setwd("C:/koulu/mooc/intro to open data/IODS-project/") # change this if you wish to run the code on your computer
 ```
 
 ### Loading the data
+
+Loading the data from 2 csv-files, and checking their dimensions and structures
 
 ```{r Data Loading}
 dta_mat <- read.csv("student-mat.csv", sep=";", header=TRUE)
@@ -48,6 +62,11 @@ mat <- inner_join(dta_mat, dta_por, by = join_by)
 dim(mat)
 str(mat)
 ```
+
+### Data concatination
+
+Here we find all the variables from the 2 data sets and combine them by taking the average of the numerical
+variables, and taking only one of the non-numerical variables
 
 ```{r if_else_structure}
 
@@ -76,13 +95,22 @@ for(column_name in notjoined_columns) {
 
 ```
 ### Mutating columns into one
+
+Here we create new variables from existing ones to be used in the later stages of the analysis
+
 ```{r mutations}
 alc <- mutate(alc, alc_use = (Dalc + Walc) / 2)
 alc <- mutate(alc, high_use = alc_use > 2)
 glimpse(alc)
 ```
+### Save the data
+
+Here we save the data into a csv-file for later usage.
+
 ```{r saving data to csv}
 write.csv(x = alc, file="./data/alc_data.csv")
 ```
+
+## Analysis
 
 

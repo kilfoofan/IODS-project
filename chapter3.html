@@ -370,8 +370,13 @@ summary {
 <h2>Logistic regression</h2>
 <p>Arto Vesterbacka</p>
 <p>This chapter is about logistic regression using student data.</p>
+</div>
+<div id="data-wrangling" class="section level2">
+<h2>Data Wrangling</h2>
+<p>Here we take the student data from two files, combine them into one with only the observations that are found from both sets. We also create new variables from existing ones to be used in later analysis.</p>
 <div id="setting-up-libraries-and-working-directory." class="section level3">
 <h3>Setting up libraries and working directory.</h3>
+<p>Here we load all the required libraries for the data wrangling and analysis.</p>
 <pre class="r"><code>library(knitr)
 library(ggplot2)
 library(dplyr)</code></pre>
@@ -385,10 +390,15 @@ library(dplyr)</code></pre>
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(tidyr)
 #library(GGally)</code></pre>
+</div>
+<div id="setting-the-working-directory" class="section level3">
+<h3>Setting the working directory</h3>
+<p>Here we set the working directory. If you are going to run this on your computer, you will need to set tis to the correct path corresponding to your system.</p>
 <pre class="r"><code>setwd(&quot;C:/koulu/mooc/intro to open data/IODS-project/&quot;) # change this if you wish to run the code on your computer</code></pre>
 </div>
 <div id="loading-the-data" class="section level3">
 <h3>Loading the data</h3>
+<p>Loading the data from 2 csv-files, and checking their dimensions and structures</p>
 <pre class="r"><code>dta_mat &lt;- read.csv(&quot;student-mat.csv&quot;, sep=&quot;;&quot;, header=TRUE)
 dta_por &lt;- read.csv(&quot;student-por.csv&quot;, sep=&quot;;&quot;, header=TRUE)
 dim(dta_mat)</code></pre>
@@ -528,6 +538,10 @@ dim(mat)</code></pre>
 ##  $ G1.y        : int  0 9 12 14 11 12 13 10 15 12 ...
 ##  $ G2.y        : int  11 11 13 14 13 12 12 13 16 12 ...
 ##  $ G3.y        : int  11 11 12 14 13 13 13 13 17 13 ...</code></pre>
+</div>
+<div id="data-concatination" class="section level3">
+<h3>Data concatination</h3>
+<p>Here we find all the variables from the 2 data sets and combine them by taking the average of the numerical variables, and taking only one of the non-numerical variables</p>
 <pre class="r"><code>alc &lt;- select(mat, one_of(join_by))
 
 # the columns in the datasets which were not used for joining the data
@@ -553,6 +567,7 @@ for(column_name in notjoined_columns) {
 </div>
 <div id="mutating-columns-into-one" class="section level3">
 <h3>Mutating columns into one</h3>
+<p>Here we create new variables from existing ones to be used in the later stages of the analysis</p>
 <pre class="r"><code>alc &lt;- mutate(alc, alc_use = (Dalc + Walc) / 2)
 alc &lt;- mutate(alc, high_use = alc_use &gt; 2)
 glimpse(alc)</code></pre>
@@ -593,8 +608,15 @@ glimpse(alc)</code></pre>
 ## $ G3         &lt;dbl&gt; 8, 8, 11, 14, 12, 14, 12, 10, 18, 14, 12, 12, 13, 1...
 ## $ alc_use    &lt;dbl&gt; 1.0, 1.0, 2.5, 1.0, 1.5, 1.5, 1.0, 1.0, 1.0, 1.0, 1...
 ## $ high_use   &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FAL...</code></pre>
+</div>
+<div id="save-the-data" class="section level3">
+<h3>Save the data</h3>
+<p>Here we save the data into a csv-file for later usage.</p>
 <pre class="r"><code>write.csv(x = alc, file=&quot;./data/alc_data.csv&quot;)</code></pre>
 </div>
+</div>
+<div id="analysis" class="section level2">
+<h2>Analysis</h2>
 </div>
 
 
