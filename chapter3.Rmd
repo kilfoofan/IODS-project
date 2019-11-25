@@ -3,7 +3,7 @@ title: "chapter 3"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setupp, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -27,7 +27,7 @@ library(knitr)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
-#library(GGally)
+library(GGally)
 ```
 
 ### Setting the working directory
@@ -113,4 +113,33 @@ write.csv(x = alc, file="./data/alc_data.csv")
 
 ## Analysis
 
+### Reading the data from the csv-file
 
+```{r read data}
+chap3 <- read.table("./data/alc_data.csv", sep=",", header=TRUE)
+str(chap3)
+```
+
+### Selecting 4 interesting variable for analysis on alcohol usage
+
+We select absences, romantic, goout, and internet as the variables to explain high/low alcohol usage
+
+```{r EDA}
+chap3 %>% group_by(sex, high_use, romantic, internet) %>% summarise(count = n(), absens = mean(absences, go_out = mean(goout)))
+par(mfrow=c(2,2))
+pair_plot <- ggpairs(chap3, columns = c("sex","absences", "romantic", "goout", "internet"), aes(col = sex, alpha = 0.3), lower = list(combo = wrap("facethist", bins = 20)))
+pair_plot
+
+```
+
+### Logistic regression model
+
+Here we will do the logistic regression analysis using our selected variables
+
+```{r logistic regression}
+model = glm(high_use ~ absences + romantic + goout + internet, data = chap3, family = "binomial")
+summary(model)
+OR = coef(model) %>% exp
+CI = confint(model) %>% exp
+cbind(OR, CI)
+```
