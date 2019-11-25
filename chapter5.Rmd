@@ -1,0 +1,51 @@
+---
+title: "chapter 5"
+author: "Arto Vesterbacka"
+date: "25 11 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries}
+library(dplyr)
+```
+
+### Data Wrangling
+
+```{r data wrangling}
+hd <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human_development.csv", stringsAsFactors = F)
+gii <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/gender_inequality.csv", stringsAsFactors = F, na.strings = "..")
+str(gii)
+str(hd)
+summary(gii)
+summary(hd)
+
+hd<- hd %>% rename(
+  hd.index = Human.Development.Index..HDI.,
+  hd.life = Life.Expectancy.at.Birth,
+  hd.education.exp = Expected.Years.of.Education,
+  hd.education.mean = Mean.Years.of.Education,
+  hd.GDP =  Gross.National.Income..GNI..per.Capita,
+  hd.gni.rank = GNI.per.Capita.Rank.Minus.HDI.Rank
+  )
+gii<-gii %>% rename(
+  gii.index = Gender.Inequality.Index..GII.,
+  gii.mom.death = Maternal.Mortality.Ratio,
+  gii.ad.births = Adolescent.Birth.Rate,
+  gii.reps = Percent.Representation.in.Parliament,
+  gii.2ndedu.f = Population.with.Secondary.Education..Female.,
+  gii.2ndedu.m = Population.with.Secondary.Education..Male.,
+  gii.labor.f = Labour.Force.Participation.Rate..Female.,
+  gii.labor.m = Labour.Force.Participation.Rate..Male.
+  )
+summary(gii)
+gii <- mutate(gii, edu.ratio = gii.2ndedu.f/gii.2ndedu.m)
+gii <- mutate(gii, lab.ratio = gii.labor.f/gii.labor.m)
+
+humandata <- inner_join(hd, gii, by = "Country")
+str(humandata)
+
+```
